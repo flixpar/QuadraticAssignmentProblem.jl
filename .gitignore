@@ -1,0 +1,16 @@
+# temp files
+*.log
+*.swo
+*.swp
+*.tmp
+*.vi
+*.lp
+*~
+.DS_Store
+.vscode/
+
+# jupyter notebook cache
+.ipynb_checkpoints/
+
+# manual backups
+backup/

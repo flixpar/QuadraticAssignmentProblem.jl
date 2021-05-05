@@ -1,2 +1,3 @@
 # Quadratic Assignment Problem
-Felix Parker
+
+Algorithms for (approximately) solving the quadratic assignment problem (QAP) implemented in Julia.
