@@ -25,6 +25,7 @@ function lp_mms(A, B)
 	N = size(A, 1)
 
 	model = Model(Gurobi.Optimizer)
+	set_silent(model)
 
 	@variable(model, x[1:N,1:N] ≥ 0)
 	@variable(model, y[1:N,1:N,1:N,1:N] ≥ 0)
@@ -55,9 +56,10 @@ LP rounding step of the MMS algorithm.
 """
 function rounding_mms(A, B, x, y)
 	N = size(A, 1)
+	n2 = Int(floor(N/2))
 
-	La = randperm(N)[1:floor(N/2)]
-	Lb = randperm(N)[1:floor(N/2)]
+	La = randperm(N)[1:n2]
+	Lb = randperm(N)[1:n2]
 
 	Ra = setdiff(1:N, La)
 	Rb = setdiff(1:N, Lb)
@@ -79,11 +81,11 @@ function rounding_mms(A, B, x, y)
 		ϕ[u] = p
 	end
 
-	̃La = findall(!=(-1), ϕ)
-	W = [sum(A[u,v] * B[ϕ[u],q] for u in ̃La) for v in Ra, q in Rb]
+	La = findall(!=(-1), ϕ)
+	W = [sum(A[u,v] * B[ϕ[u],q] for u in La) for v in Ra, q in Rb]
 	matching = Hungarian.munkres(W)
 	ψ = fill(-1, N)
-	for i in 1:ceil(N/2)
+	for i in 1:Int(ceil(N/2))
 		j = findfirst(matching[i,:] .== Hungarian.STAR)
 		ψ[Ra[i]] = Rb[j]
 	end
