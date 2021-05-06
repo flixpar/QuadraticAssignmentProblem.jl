@@ -1,4 +1,4 @@
-using LinearAlgebra: norm
+using LinearAlgebra
 
 
 """
@@ -6,6 +6,11 @@ Compute the quadratic objective function value ||AP - PB||₂² of a given graph
 matching.
 """
 function qap_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, P::Array{Int,2})
+	return norm(A*P - P*B, 2)^2
+end
+
+function qap_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, matching::Array{Int,1})
+	P = Int.(Matrix(I, N, N))[matching,:]
 	return norm(A*P - P*B, 2)^2
 end
 
