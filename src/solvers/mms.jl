@@ -48,8 +48,9 @@ function lp_mms(A, B)
 	status = Int(termination_status(model))
 	@assert status == 1
 
-	x_sol = value.(x)
-	y_sol = value.(y)
+	x_sol = max.(0.0, value.(x))
+	y_sol = max.(0.0, value.(y))
+
 	return x_sol, y_sol
 end
 

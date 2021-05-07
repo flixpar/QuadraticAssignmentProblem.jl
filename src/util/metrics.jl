@@ -50,7 +50,7 @@ end
 Compute the accuracy of an estimated graph matching relative to the canonical
 graph matching, excluding seeds and errors.
 """
-function match_ratio(true_match::Array{Int,2}, est_match::Array{Int,2}; seeds::Int=0, errors::Array{Int,2})
+function match_ratio(true_match::Array{Int,2}, est_match::Array{Int,2}, seeds::Int, errors::Array{Int,2})
 
 	ignore = union(1:seeds, errors[:,1], errors[:,2])
 	keepind = setdiff(1:size(true_match, 1), ignore)
