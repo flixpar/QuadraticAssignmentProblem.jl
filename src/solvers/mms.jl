@@ -3,6 +3,8 @@ using Gurobi
 
 using Hungarian
 
+using LinearAlgebra
+
 using Random
 using Distributions
 
@@ -15,7 +17,8 @@ Makarychev, Manokaran, and Sviridenko (MMS) to approximately solve the QAP.
 function mms(A, B)
 	x, y = lp_mms(A, B)
 	perm = rounding_mms(A, B, x, y)
-	return perm
+	P = Int.(Matrix(I, size(A,1), size(A,1)))[perm,:]
+	return P, perm
 end
 
 """
