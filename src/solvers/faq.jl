@@ -77,7 +77,7 @@ function faq(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}; iter::Int=3
 	matching = sortslices(matching, dims=1)
 
 	# 9. Return P̂ and the associated matching
-	return P̂, matching
+	return Int.(P̂), matching
 
 end
 

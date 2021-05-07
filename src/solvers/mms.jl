@@ -82,6 +82,10 @@ function rounding_mms(A, B, x, y)
 	end
 
 	La = findall(!=(-1), ϕ)
+	if isempty(La)
+		return rounding_mms(A, B, x, y)
+	end
+
 	W = [sum(A[u,v] * B[ϕ[u],q] for u in La) for v in Ra, q in Rb]
 	matching = Hungarian.munkres(W)
 	ψ = fill(-1, N)
