@@ -2,15 +2,25 @@ using LinearAlgebra
 
 
 """
-Compute the quadratic objective function value ||AP - PB||₂² of a given graph
-matching.
+Compute the QAP objective function value.
 """
-function qap_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, P::Array{Int,2})
+function qap_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, P::Union{BitMatrix, Matrix{Bool}, Matrix{Int}})
+	return tr(A * P * B' * P')
+end
+
+function qap_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, perm::Array{Int,1})
+	return sum(A .* B[perm,perm])
+end
+
+"""
+Compute the objective function value ||AP - PB||₂² of a given graph matching.
+"""
+function gm_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, P::Union{BitMatrix, Matrix{Bool}, Matrix{Int}})
 	return norm(A*P - P*B, 2)^2
 end
 
-function qap_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, matching::Array{Int,1})
-	P = Int.(Matrix(I, N, N))[matching,:]
+function gm_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, matching::Array{Int,1})
+	P = Matrix(I, N, N)[matching,:]
 	return norm(A*P - P*B, 2)^2
 end
 
@@ -20,14 +30,6 @@ matching.
 """
 function l1_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, P::Array{Int,2})
 	return sum(abs.(A*P - P*B))
-end
-
-"""
-Compute the indefinite relaxation objective function value -Trace(PᵀAᵀPB) of a
-given graph matching.
-"""
-function indef_objective(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, P::Array{Int,2})
-	return -tr(P'*A'*P*B)
 end
 
 """
