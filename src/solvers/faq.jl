@@ -7,7 +7,8 @@ using Hungarian
 Perform the FAQ algorithm from "Fast Approximate Quadratic Programming for Graph Matching"
 to approximately solve the QAP.
 """
-function faq(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}; iter::Int=30, initmethod::Symbol=:barycenter)
+function faq(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj; iter::Int=30, initmethod::Symbol=:barycenter)
+	@assert obj == :max
 	@assert initmethod in [:barycenter, :random]
 
 	# 0. Get size
@@ -85,13 +86,14 @@ end
 Perform the SGM algorithm from "Seeded Graph Matching" to approximately
 solve the QAP with m seeds.
 """
-function sgm(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, m::Int; initmethod::Symbol=:barycenter, maxiter::Int=20, returniter::Bool=false)
+function sgm(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj, m::Int; initmethod::Symbol=:barycenter, maxiter::Int=20, returniter::Bool=false)
 
 	# 0. Checks
 	@assert size(A,1) == size(A,2)
 	@assert size(B,1) == size(B,2)
 	@assert size(A,1) == size(B,1)
 	@assert initmethod in [:barycenter, :random]
+	@assert obj == :max
 
 	# 0. Get size
 	N = size(A,1)
