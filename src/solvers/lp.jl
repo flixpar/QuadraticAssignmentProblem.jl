@@ -19,7 +19,7 @@ Approximately solve the QAP by linearizing and relaxing the problem
 and solving the resulting LIP with linear programming and rounding
 via the Hungarian algorithm.
 """
-function qap_lp(A, B, obj)
+function qap_lprounding(A, B, obj)
 	x, _ = adams_johnson_linearization(A, B, obj, integer=false)
 
 	W = maximum(x) .- x

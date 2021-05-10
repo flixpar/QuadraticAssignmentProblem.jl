@@ -6,7 +6,7 @@ using Gurobi
 """
 Solve the QAP using quadratic integer progamming.
 """
-function qap_ip(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::Symbol; seeds::Int=0)
+function qap_exact(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::Symbol; seeds::Int=0)
 	@assert obj in [:min, :max]
 	n = size(A,1) - seeds
 
@@ -45,7 +45,7 @@ end
 """
 Solve the QAP using quadratic integer progamming. Uses Convex.jl for modeling.
 """
-function qap_ip_alt(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::Symbol; seeds::Int=0)
+function qap_exact_alt(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::Symbol; seeds::Int=0)
 	@assert obj in [:min, :max]
 	n = size(A,1) - seeds
 

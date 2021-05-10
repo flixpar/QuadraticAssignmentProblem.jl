@@ -11,8 +11,8 @@ include("util/generators.jl")
 include("util/graphmatching.jl")
 include("util/metrics.jl")
 
-export qap_ip
-export lap_ip, lap_relaxation
+export qap_exact
+export qap_linearization, qap_lprounding
 export faq
 export qap_mms
 export qap_ns, qap_starpacking, qap_densemapping
