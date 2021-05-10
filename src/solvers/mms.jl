@@ -14,7 +14,7 @@ Run the algorithm from "Maximum Quadratic Assignment Problem: Reduction
 from Maximum Label Cover and LP-based Approximation Algorithm" by
 Makarychev, Manokaran, and Sviridenko (MMS) to approximately solve the QAP.
 """
-function mms(A, B, obj)
+function qap_mms(A, B, obj)
 	@assert obj == :max
 	x, y = lp_mms(A, B)
 	perm = rounding_mms(A, B, x, y)
