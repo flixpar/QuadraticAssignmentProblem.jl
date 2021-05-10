@@ -56,6 +56,7 @@ function rounding_mms(A, B, x, y)
 	end
 
 	W = [sum(A[u,v] * B[ϕ[u],q] for u in La) for v in Ra, q in Rb]
+	W = maximum(W) .- W
 	matching = Hungarian.munkres(W)
 	ψ = fill(-1, N)
 	for i in 1:Int(ceil(N/2))
