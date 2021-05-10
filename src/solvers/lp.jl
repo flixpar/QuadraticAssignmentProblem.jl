@@ -11,7 +11,7 @@ the resulting linear integer program.
 """
 function qap_linearization(A, B, obj)
 	P, _ = adams_johnson_linearization(A, B, obj, integer=true)
-	matching = [findfirst(P[i,:]) for i in 1:size(A,1)]
+	matching = [findfirst(==(1), P[i,:]) for i in 1:size(A,1)]
 	return P, matching
 end
 
@@ -66,8 +66,14 @@ function adams_johnson_linearization(A, B, obj; integer::Bool=true)
 
 	x_sol = value.(x)
 	y_sol = value.(y)
+
 	clamp!(x_sol, 0, 1)
 	clamp!(y_sol, 0, 1)
+
+	if integer
+		x_sol = x_sol .> 0.5
+		y_sol = y_sol .> 0.5
+	end
 
 	return x_sol, y_sol
 end
