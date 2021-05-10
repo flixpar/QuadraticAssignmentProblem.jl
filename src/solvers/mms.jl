@@ -3,8 +3,6 @@ using LinearAlgebra
 using Random
 using Distributions
 
-include("lp.jl")
-
 
 """
 Run the algorithm from "Maximum Quadratic Assignment Problem: Reduction
