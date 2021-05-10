@@ -1,12 +1,9 @@
-using JuMP
-using Gurobi
-
 using Hungarian
-
 using LinearAlgebra
-
 using Random
 using Distributions
+
+include("lp.jl")
 
 
 """
@@ -16,45 +13,11 @@ Makarychev, Manokaran, and Sviridenko (MMS) to approximately solve the QAP.
 """
 function qap_mms(A, B, obj)
 	@assert obj == :max
-	x, y = lp_mms(A, B)
+	x, y = adams_johnson_linearization(A, B, integer=false)
 	perm = rounding_mms(A, B, x, y)
 	P = Matrix(I, size(A)...)[perm,:]
 	return P, perm
 end
-
-"""
-LP relaxation used by the MMS algorithm.
-"""
-function lp_mms(A, B)
-	N = size(A, 1)
-
-	model = Model(Gurobi.Optimizer)
-	set_silent(model)
-
-	@variable(model, x[1:N,1:N] ≥ 0)
-	@variable(model, y[1:N,1:N,1:N,1:N] ≥ 0)
-
-	@constraint(model, [u=1:N], sum(x[u,:]) == 1)
-	@constraint(model, [p=1:N], sum(x[:,p]) == 1)
-	@constraint(model, [v=1:N,p=1:N,q=1:N], sum(y[:,p,v,q]) == x[v,q])
-	@constraint(model, [u=1:N,v=1:N,q=1:N], sum(y[u,:,v,q]) == x[v,q])
-	@constraint(model, [u=1:N,p=1:N,v=1:N,q=1:N], y[u,p,v,q] == y[v,q,u,p])
-	@constraint(model, [u=1:N,p=1:N], 0 ≤ x[u,p] ≤ 1)
-	@constraint(model, [u=1:N,p=1:N,v=1:N,q=1:N], 0 ≤ y[u,p,v,q] ≤ 1)
-
-	@objective(model, Max, sum(A[u,v] * B[p,q] * y[u,p,v,q] for u=1:N, p=1:N, v=1:N, q=1:N))
-
-	optimize!(model)
-
-	status = Int(termination_status(model))
-	@assert status == 1
-
-	x_sol = max.(0.0, value.(x))
-	y_sol = max.(0.0, value.(y))
-
-	return x_sol, y_sol
-end
-
 
 """
 LP rounding step of the MMS algorithm.
