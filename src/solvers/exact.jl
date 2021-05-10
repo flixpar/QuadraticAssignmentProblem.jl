@@ -1,6 +1,7 @@
 using JuMP
 using Convex
 using Gurobi
+import MathOptInterface as MOI
 
 
 """
@@ -23,7 +24,7 @@ function qap_exact(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::
 	@constraint(model, sum(P, dims=1) .== 1)
 	@constraint(model, sum(P, dims=2) .== 1)
 
-	model_obj = (obj == :min) ? Min : Max
+	model_obj = (obj == :min) ? MOI.MIN_SENSE : MOI.MAX_SENSE
 	@objective(model, model_obj, tr(A * P * B' * P'))
 
 	optimize!(model)

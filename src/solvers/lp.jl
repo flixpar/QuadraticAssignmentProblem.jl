@@ -2,6 +2,7 @@ using JuMP
 using Gurobi
 using Hungarian
 using LinearAlgebra
+import MathOptInterface as MOI
 
 
 """
@@ -55,7 +56,7 @@ function adams_johnson_linearization(A, B, obj; integer::Bool=true)
 		@constraint(model, [u=1:N,p=1:N,v=1:N,q=1:N], 0 ≤ y[u,p,v,q] ≤ 1)
 	end
 
-	model_obj = (obj == :min) ? Min : Max
+	model_obj = (obj == :min) ? MOI.MIN_SENSE : MOI.MAX_SENSE
 	@objective(model, model_obj, sum(A[u,v] * B[p,q] * y[u,p,v,q] for u=1:N, p=1:N, v=1:N, q=1:N))
 
 	optimize!(model)
