@@ -73,9 +73,7 @@ function faq(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj; iter::
 	P̂ = Matrix(matching .== Hungarian.STAR)
 
 	# 8. Compute the matching associated to P̂
-	matching = argmax(P̂', dims=2)
-	matching = hcat(getindex.(matching,1), getindex.(matching,2))
-	matching = sortslices(matching, dims=1)
+	matching = [findfirst(P̂[i,:]) for i in 1:N]
 
 	# 9. Return P̂ and the associated matching
 	return Int.(P̂), matching
@@ -178,9 +176,7 @@ function sgm(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj, m::Int
 	P̂ = Int.(P̂)
 
 	# 8. Compute the matching associated to P̂
-	matching = argmax(P̂', dims=2)
-	matching = hcat(getindex.(matching,1), getindex.(matching,2))
-	matching = sortslices(matching, dims=1)
+	matching = [findfirst(P̂[i,:]) for i in 1:N]
 
 	if returniter
 		return P̂, matching, it
