@@ -4,71 +4,111 @@ using ProgressMeter
 using DataFrames
 using CSV
 using Dates
+using Random
 
-default_algorithms = [
-	(name = "opt",  method = qap_ip),
-	(name = "lip",  method = lap_ip),
-	(name = "lpr",  method = lap_relaxation),
-	(name = "faq",  method = faq),
-	(name = "rand", method = qap_random),
-	(name = "mms",  method = mms),
+
+iterations = 5
+
+problem = (
+	N = 10,
+	objective = :max,
+	matrix_type = :uniform,
+	density = missing,
+)
+
+algorithms = [
+	(name = "opt",    method = qap_exact),
+	(name = "lin",    method = qap_linearization),
+	(name = "lpr",    method = qap_lprounding),
+	(name = "faq",    method = faq),
+	(name = "rand",   method = qap_random),
+	(name = "mms",    method = qap_mms),
+	# (name = "ns",     method = qap_ns),
+	# (name = "star",   method = qap_starpacking),
+	# (name = "dense",  method = qap_densemapping),
 ]
 
 
-function compare(N, iter, algorithms)
-	compare_step(6, algorithms)
+function compare(problem, algorithms, iterations)
+	warmup_problem = merge(problem, (;N=5))
+	compare_step(warmup_problem, algorithms)
 
 	results = []
-	@showprogress for i in 1:iter
-		push!(results, compare_step(N, algorithms))
+	@showprogress for i in 1:iterations
+		append!(results, compare_step(problem, algorithms))
 	end
 
-	save_results(results, algorithms)
+	save_results(results)
 
 	return results
 end
 
-function compare_step(N, algorithms)
-	A = uniform_matrix(N)
-	B = uniform_matrix(N)
+function compare_step(problem, algorithms)
+	A, B = generate_example(problem)
+	uid = rand(UInt)
+	opt = missing
 
-	r = Dict{String,Any}("N" => N, "uid" => rand(UInt))
+	results = []
 	for a in algorithms
-		a_name, alg = a.name, a.method
-		t = @elapsed P, _ = alg(A,B)
-		o = qap_objective(A, B, P)
-		r["t_"*a_name] = t
-		r["o_"*a_name] = o
-		r["r_"*a_name] = o / r["o_opt"]
+		alg = a.method
+		time = @elapsed P, _ = alg(A, B, problem.objective)
+		obj = qap_objective(A, B, P)
+
+		if a.name == "opt" opt = obj end
+
+		r = merge(problem, (;uid, method=a.name, time, obj, ratio=obj/opt))
+		push!(results, r)
 	end
 
-	return r
+	return results
 end
 
-function save_results(results, algorithms)
-
-	rv = Dates.format(now(), "yyyymmddHHMM")
-
-	if !isdir("results/")
-		mkdir("results/")
+function generate_example(problem)
+	N = problem.N
+	if problem.matrix_type == :uniform
+		gen = () -> uniform_matrix(N)
+	elseif problem.matrix_type == :metric
+		gen = () -> metric_matrix(N)
+	elseif problem.matrix_type == :undirected_graph
+		gen = () -> zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=true)
+	elseif problem.matrix_type == :directed_graph
+		gen = () -> zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=false)
+	else
+		error("Invalid matrix type: $(problem.matrix_type)")
 	end
 
-	col_order = vcat(["N", "uid"], [m*"_"*a.name for m in ["r", "o", "t"], a in algorithms][:])
-	results_df = DataFrame([k => [r[k] for r in results] for k in col_order])
-	results_df |> CSV.write("results/results_$(rv).csv")
+	A = gen()
+	B = gen()
+	return A, B
+end
+
+function save_results(results)
+
+	d = Dates.format(now(), "yyyymmddHHMM")
+	d = isdir("results/$d/") ? d * "_" * randstring(8) : d
+
+	dir = joinpath("./results/", d)
+	mkpath(dir)
+
+	metric_cols = [:time, :obj, :ratio]
+	problem_cols = setdiff(keys(results[1]), metric_cols, [:uid])
+
+	results_df_long = DataFrame(results)
+	results_df_long |> CSV.write(joinpath(dir, "results_long.csv"))
 
 	mean(xs) = sum(xs) / length(xs)
+	results_mean_df = combine(groupby(results_df_long, problem_cols), [m => mean => m for m in metric_cols]...)
+	results_mean_df |> CSV.write(joinpath(dir, "results_mean.csv"))
 
-	results_df_long = stack(results_df, Not([:N, :uid]), variable_name=:metric)
-	insertcols!(results_df_long, 3, :algorithm => [m[3:end] for m in results_df_long.metric])
-	results_df_long.metric = [(m[1] == 't') ? "time" : (m[1] == 'o') ? "obj" : "ratio" for m in results_df_long.metric]
-	results_df_long = unstack(results_df_long, :metric, :value)
-	mean_results_df = combine(groupby(results_df_long, [:N, :algorithm]), :ratio => mean, :obj => mean, :time => mean)
-	mean_results_df |> CSV.write("results/results_mean_$(rv).csv")
+	results_df_wide = stack(results_df_long, metric_cols)
+	transform!(results_df_wide, [:variable, :method] => ByRow((metric, method) -> metric*"_"*method) => :key)
+	select!(results_df_wide, Not([:variable, :method]))
+	results_df_wide = unstack(results_df_wide, :key, :value)
+	results_df_wide |> CSV.write(joinpath(dir, "results_wide.csv"))
 
 	return
 end
 
 if abspath(PROGRAM_FILE) == @__FILE__
-	compare(10, 10, default_algorithms)
+	compare(problem, algorithms, iterations)
 end
