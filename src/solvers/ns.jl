@@ -3,10 +3,10 @@ include("../util/metrics.jl")
 
 
 """
-Approximate QAP using the complete algorithm from "On the
+Approximate the 0-1 QAP using the complete algorithm from "On the
 Maximum Quadratic Assignment Problem" by Nagarajan and Sviridenko (NS).
 """
-function qap_ns(A, B, obj)
+function qap_ns(A::Union{BitMatrix, Matrix{Bool}}, B::Union{BitMatrix, Matrix{Bool}}, obj::Symbol)
 	@assert obj == :max
 
 	P_starpacking, σ_starpacking = qap_starpacking(A, B, :max)
@@ -23,10 +23,10 @@ function qap_ns(A, B, obj)
 end
 
 """
-Approximate QAP using the common star packing algorithm from "On the
+Approximate the 0-1 QAP using the common star packing algorithm from "On the
 Maximum Quadratic Assignment Problem" by Nagarajan and Sviridenko (NS).
 """
-function qap_starpacking(A, B, obj)
+function qap_starpacking(A::Union{BitMatrix, Matrix{Bool}}, B::Union{BitMatrix, Matrix{Bool}}, obj::Symbol)
 	@assert obj == :max
 	N = size(A, 1)
 
@@ -178,10 +178,10 @@ function csp_move!(G, H, ESs, ETs, σ, i, x, y, c)
 end
 
 """
-Approximate QAP using the dense subgraph mapping algorithm from "On the
+Approximate the 0-1 QAP using the dense subgraph mapping algorithm from "On the
 Maximum Quadratic Assignment Problem" by Nagarajan and Sviridenko (NS).
 """
-function qap_densemapping(G, H, obj)
+function qap_densemapping(G::Union{BitMatrix, Matrix{Bool}}, H::Union{BitMatrix, Matrix{Bool}}, obj::Symbol)
 	@assert obj == :max
 
 	C₁ = vertex_cover(G)
