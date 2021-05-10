@@ -18,7 +18,7 @@ function mms(A, B, obj)
 	@assert obj == :max
 	x, y = lp_mms(A, B)
 	perm = rounding_mms(A, B, x, y)
-	P = Int.(Matrix(I, size(A,1), size(A,1)))[perm,:]
+	P = Matrix(I, size(A)...)[perm,:]
 	return P, perm
 end
 
@@ -73,6 +73,7 @@ function rounding_mms(A, B, x, y)
 	for u in La
 		probs = x[u,Lb]
 		push!(probs, 1 - sum(probs))
+		probvec!(probs)
 		p′ = rand(Categorical(probs))
 		p = (p′ == length(probs)) ? -1 : p′
 		ϕ̃[u] = p
@@ -106,4 +107,21 @@ function rounding_mms(A, B, x, y)
 	perm[missing_ind] = missing_vals
 
 	return perm
+end
+
+function probvec!(xs::Array{<:Real,1})
+	z = zero(xs[1])
+	s = z
+	for i in 1:length(xs)
+		if xs[i] < z
+			xs[i] = z
+		end
+		s += xs[i]
+	end
+	if s != 1
+		for i in 1:length(xs)
+			xs[i] = xs[i] / s
+		end
+	end
+	return xs
 end
