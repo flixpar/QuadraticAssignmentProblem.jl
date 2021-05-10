@@ -93,7 +93,7 @@ end
 QAP linearization from "Improved linear programming-based
 lower bounds for the quadratic assignment problem" by Adams and Johnson.
 """
-function adams_johnson_linearization(A, B; integer::Bool=true)
+function adams_johnson_linearization(A, B, obj; integer::Bool=true)
 	N = size(A, 1)
 
 	model = Model(Gurobi.Optimizer)
@@ -113,7 +113,8 @@ function adams_johnson_linearization(A, B; integer::Bool=true)
 		@constraint(model, [u=1:N,p=1:N,v=1:N,q=1:N], 0 ≤ y[u,p,v,q] ≤ 1)
 	end
 
-	@objective(model, Max, sum(A[u,v] * B[p,q] * y[u,p,v,q] for u=1:N, p=1:N, v=1:N, q=1:N))
+	model_obj = (obj == :min) ? Min : Max
+	@objective(model, model_obj, sum(A[u,v] * B[p,q] * y[u,p,v,q] for u=1:N, p=1:N, v=1:N, q=1:N))
 
 	optimize!(model)
 

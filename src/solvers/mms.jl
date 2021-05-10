@@ -13,7 +13,7 @@ Makarychev, Manokaran, and Sviridenko (MMS) to approximately solve the QAP.
 """
 function qap_mms(A, B, obj)
 	@assert obj == :max
-	x, y = adams_johnson_linearization(A, B, integer=false)
+	x, y = adams_johnson_linearization(A, B, :max, integer=false)
 	perm = rounding_mms(A, B, x, y)
 	P = Matrix(I, size(A)...)[perm,:]
 	return P, perm
