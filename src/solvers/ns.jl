@@ -213,7 +213,7 @@ function qap_densemapping(G::Union{BitMatrix, Matrix{Bool}}, H::Union{BitMatrix,
 end
 
 function vertex_cover(G)
-	G = deepcopy(G)
+	G = triu(G)
 	S = Int[]
 	while sum(G) > 0
 		edges = findall(G)
@@ -251,7 +251,10 @@ function dense_ksubgraph_trivial(G, k)
 	G = triu(G)
 
 	edges = Tuple.(findall(G))
-	edges = shuffle(edges)[1:round(Int, k/2)]
+	shuffle!(edges)
+
+	E = min(length(edges), Int(floor(k/2)))
+	edges = edges[1:E]
 
 	vertices = [e[i] for e in edges, i in [1,2]][:]
 	vertices = unique(vertices)
