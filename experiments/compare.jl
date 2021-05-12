@@ -44,9 +44,8 @@ function compare(problem, algorithms, iterations)
 end
 
 function compare_step(problem, algorithms)
-	A, B = generate_example(problem)
+	A, B, opt = generate_example(problem)
 	uid = rand(UInt)
-	opt = missing
 
 	results = []
 	for a in algorithms
@@ -54,7 +53,7 @@ function compare_step(problem, algorithms)
 		time = @elapsed P, _ = alg(A, B, problem.objective)
 		obj = qap_objective(A, B, P)
 
-		if a.name == "opt" opt = obj end
+		if (a.name == "opt") opt = obj end
 
 		r = merge(problem, (;uid, method=a.name, time, obj, ratio=obj/opt))
 		push!(results, r)
@@ -65,21 +64,27 @@ end
 
 function generate_example(problem)
 	N = problem.N
+	opt = missing
 	if problem.matrix_type == :uniform
-		gen = () -> uniform_matrix(N)
+		A = uniform_matrix(N)
+		B = uniform_matrix(N)
 	elseif problem.matrix_type == :metric
-		gen = () -> metric_matrix(N)
+		A = metric_matrix(N)
+		B = metric_matrix(N)
 	elseif problem.matrix_type == :undirected_graph
-		gen = () -> zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=true)
+		A = zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=true)
+		B = zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=true)
 	elseif problem.matrix_type == :directed_graph
-		gen = () -> zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=false)
+		A = zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=false)
+		B = zeroone_matrix(N, p=problem.density, selfedges=false, symmetric=false)
+	elseif problem.matrix_type == :known
+		A, B, perm = generate_qap(N)
+		opt = qap_objective(A, B, perm)
 	else
 		error("Invalid matrix type: $(problem.matrix_type)")
 	end
 
-	A = gen()
-	B = gen()
-	return A, B
+	return A, B, opt
 end
 
 function save_results(results)
