@@ -4,9 +4,11 @@ using Random
 """
 Approximately solve the QAP through random sampling.
 """
-function qap_random(A, B, obj; iter=100)
+function qap_random(A, B, obj; iter=-1)
 	@assert obj in [:min, :max]
 	N = size(A, 1)
+
+	iter = (iter == -1) ? 10N : iter
 
 	best_sol = ((obj == :min) ? Inf : -Inf, nothing)
 
