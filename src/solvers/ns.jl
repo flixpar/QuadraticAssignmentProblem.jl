@@ -2,6 +2,38 @@ using Random
 
 
 """
+Approximate the maxQAP using the complete algorithm from "On the
+Maximum Quadratic Assignment Problem" by Nagarajan and Sviridenko (NS).
+"""
+function qap_ns(A, B, obj)
+	@assert obj == :max
+
+	n = size(A, 1)
+	z = 1 / (2 * n * n)
+	g = Int(ceil(log2(2 * n * n)))
+
+	A = A ./ maximum(A)
+	B = B ./ maximum(B)
+
+	A[A .<= z] .= 0
+	B[B .<= z] .= 0
+
+	best_sol = (-Inf, nothing, nothing)
+	for k in 1:g
+		m1, m2 = (1/2)^k, (1/2)^(k-1)
+		Ak = m1 .< A .<= m2
+		Bk = m1 .< B .<= m2
+		P, perm = qap_ns(Ak, Bk, :max)
+		obj = qap_objective(A, B, perm)
+		if obj > best_sol[1]
+			best_sol = (obj, P, perm)
+		end
+	end
+
+	return best_sol[2], best_sol[3]
+end
+
+"""
 Approximate the 0-1 QAP using the complete algorithm from "On the
 Maximum Quadratic Assignment Problem" by Nagarajan and Sviridenko (NS).
 """
