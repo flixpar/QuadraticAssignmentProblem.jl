@@ -12,18 +12,18 @@ iterations = 10
 problem = (
 	N = 10,
 	objective = :max,
-	matrix_type = :uniform,
+	matrix_type = :known,
 	density = missing,
 )
 
 algorithms = [
-	(name = "opt",    method = qap_exact),
-	(name = "lin",    method = qap_linearization),
+	# (name = "opt",    method = qap_exact),
+	# (name = "lin",    method = qap_linearization),
 	(name = "lpr",    method = qap_lprounding),
 	(name = "faq",    method = faq),
 	(name = "rand",   method = qap_random),
 	(name = "mms",    method = qap_mms),
-	# (name = "ns",     method = qap_ns),
+	(name = "ns",     method = qap_ns),
 	# (name = "star",   method = qap_starpacking),
 	# (name = "dense",  method = qap_densemapping),
 ]
