@@ -175,8 +175,9 @@ function csp_move!(G, H, ESs, ETs, σ, i, x, y, c)
 
 	# iv
 	ES = vcat(ESs...)
+	ESv = [e[j] for e in ES, j in 1:2][:]
 	A = filter(e -> e[1] == x || e[2] == x, G)
-	setdiff!(A, ES)
+	filter!(e -> e[1] ∉ ESv && e[2] ∉ ESv, A)
 	shuffle!(A)
 	if length(A) < c
 		return false, nothing
@@ -186,8 +187,9 @@ function csp_move!(G, H, ESs, ETs, σ, i, x, y, c)
 
 	# v
 	ET = vcat(ETs...)
+	ETv = [e[j] for e in ET, j in 1:2][:]
 	B = filter(e -> e[1] == y || e[2] == y, H)
-	setdiff!(B, ET)
+	filter!(e -> e[1] ∉ ETv && e[2] ∉ ETv, B)
 	shuffle!(B)
 	if length(B) < c
 		return false, nothing
