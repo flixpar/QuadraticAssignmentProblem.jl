@@ -35,10 +35,10 @@ function qap_exact(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::
 	end
 
 	P = Int.(value.(P))
-	matching = argmax(P', dims=2)
-	matching = hcat(getindex.(matching,1), getindex.(matching,2))
-	matching = vcat(hcat(1:seeds, 1:seeds), matching .+ seeds)
-	matching = sortslices(matching, dims=1)
+
+	matching = [findfirst(==(1), P[i,:]) for i in 1:n]
+	matching = matching .+ seeds
+	matching = vcat(1:seeds, matching)
 
 	return P, matching
 end
@@ -67,10 +67,10 @@ function qap_exact_alt(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, o
 	solve!(problem, Gurobi.Optimizer(OutputFlag=0))
 
 	P̂ = Int.(P.value)
-	matching = argmax(P̂', dims=2)
-	matching = hcat(getindex.(matching,1), getindex.(matching,2))
-	matching = vcat(hcat(1:seeds, 1:seeds), matching .+ seeds)
-	matching = sortslices(matching, dims=1)
+
+	matching = [findfirst(==(1), P̂[i,:]) for i in 1:n]
+	matching = matching .+ seeds
+	matching = vcat(1:seeds, matching)
 
 	return P̂, matching
 end
