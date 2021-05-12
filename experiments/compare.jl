@@ -7,7 +7,7 @@ using Dates
 using Random
 
 
-iterations = 5
+iterations = 10
 
 problem = (
 	N = 10,
