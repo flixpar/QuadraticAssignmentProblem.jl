@@ -61,7 +61,7 @@ function generate_qap(N)
 	R = findall(O)
 	sort!(R, by=(ij -> B[ij]))
 
-	X = rand(1:100, N*(N-1))
+	X = rand(1:ΔA, N*(N-1))
 	sort!(X, rev=true)
 
 	for (k, ij) in enumerate(R)

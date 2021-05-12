@@ -21,6 +21,7 @@ export qap_random
 export uniform_matrix
 export metric_matrix
 export zeroone_matrix
+export generate_qap
 
 export qap_objective
 export gm_objective
