@@ -33,3 +33,44 @@ function zeroone_matrix(N; p=0.25, selfedges=true, symmetric=false)
 	end
 	return M
 end
+
+"""
+Generate a pair of N×N matricies with known optimal permutation using
+Algorithm 4 from "Generating Quadratic Assignment Test Problems with
+Known Optimal Permutations" by Li and Pardalos.
+"""
+function generate_qap(N)
+	D = Matrix(I, N, N)
+	O = .~D
+
+	ΔA = rand(1:100)
+	ΔB = rand(1:100)
+
+	A = fill(ΔA, N, N)
+	A[D] .= 0
+
+	B = Array{Int,2}(undef, N, N)
+	for i in 1:N, j in 1:N
+		if i == j
+			B[i,j] = 0
+		else
+			B[i,j] = rand(0:ΔB)
+		end
+	end
+
+	R = findall(O)
+	sort!(R, by=(ij -> B[ij]))
+
+	X = rand(1:100, N*(N-1))
+	sort!(X, rev=true)
+
+	for (k, ij) in enumerate(R)
+		A[ij] = A[ij] - X[k]
+	end
+
+	σ = randperm(N)
+	σinv = invperm(σ)
+	B = B[σinv,σinv]
+
+	return A, B, σ
+end
