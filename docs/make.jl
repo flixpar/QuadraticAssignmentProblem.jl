@@ -10,3 +10,8 @@ makedocs(
 		"util.md",
 	],
 )
+
+deploydocs(
+	repo = "github.com/flixpar/QuadraticAssignmentProblem.jl.git",
+	devbranch = "main",
+)
