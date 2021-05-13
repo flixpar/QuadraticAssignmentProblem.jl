@@ -1,0 +1,8 @@
+N,objective,matrix_type,density,method,time,obj,ratio
+10,max,known,,opt,129.05,93419.4,1
+10,max,known,,lin,22.38,93419.4,1
+10,max,known,,lpr,0.905536152,93419.4,1
+10,max,known,,faq,9.98E-05,93397.8,0.989570256
+10,max,known,,rand,7.03E-05,77525,0.812765734
+10,max,known,,mms,0.887694738,71807.7,0.746288094
+10,max,known,,ns,10.87548241,77917.1,0.813119239

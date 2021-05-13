@@ -1,0 +1,11 @@
+objective,matrix_type,density,N,method,time,obj,ratio
+max,known,,10,faq,6.71E-05,96421.25,1
+max,known,,20,faq,0.000256138,312851,1
+max,known,,30,faq,0.000787254,1.48E+06,1
+max,known,,40,faq,0.001605326,1.15E+06,1
+max,known,,50,faq,0.003028191,1.84E+06,1
+max,known,,60,faq,0.004772163,3.92E+06,1
+max,known,,70,faq,0.005355144,3.71E+06,1
+max,known,,80,faq,0.008521134,5.77E+06,1
+max,known,,90,faq,0.012298533,6.68E+06,1
+max,known,,100,faq,0.019067918,1.03E+07,1
