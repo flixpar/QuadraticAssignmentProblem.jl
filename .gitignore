@@ -20,3 +20,6 @@ results/
 
 # data
 data/
+
+# doc
+/docs/build/
