@@ -16,6 +16,8 @@ jobs:
         with:
           version: '1.6'
       - name: Install dependencies
+        env:
+          GUROBI_JL_SKIP_LIB_CHECK: true
         run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - name: Build and deploy
         env:
