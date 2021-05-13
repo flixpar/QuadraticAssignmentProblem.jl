@@ -1,5 +1,7 @@
 # Quadratic Assignment Problem
 
+[![][docs-latest-img]][docs-latest-url]
+
 Algorithms for (approximately) solving the quadratic assignment problem (QAP) implemented in Julia.
 
 Exact algorithms:
@@ -14,3 +16,6 @@ Heuristic algorithms:
 - Fast Approximate QAP
 - Random search
 - LP + LAP rounding
+
+[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
+[docs-latest-url]: https://flixpar.github.io/QuadraticAssignmentProblem.jl/dev/
