@@ -39,9 +39,9 @@ version = "0.5.1"
 
 [[ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "bd0cc939d94b8bd736dce5bbbe0d635db9f94af7"
+git-tree-sha1 = "9b0375dc013ab0fc472b37cb8b18eed66b83f76b"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "0.9.41"
+version = "0.9.43"
 
 [[CodecBzip2]]
 deps = ["Bzip2_jll", "Libdl", "TranscodingStreams"]
@@ -124,6 +124,12 @@ git-tree-sha1 = "9d4f64f79012636741cf01133158a54b24924c32"
 uuid = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 version = "0.8.4"
 
+[[Documenter]]
+deps = ["Base64", "Dates", "DocStringExtensions", "IOCapture", "InteractiveUtils", "JSON", "LibGit2", "Logging", "Markdown", "REPL", "Test", "Unicode"]
+git-tree-sha1 = "3ebb967819b284dc1e3c0422229b58a40a255649"
+uuid = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+version = "0.26.3"
+
 [[Downloads]]
 deps = ["ArgTools", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
@@ -142,9 +148,9 @@ version = "0.10.18"
 
 [[Gurobi]]
 deps = ["CEnum", "Libdl", "MathOptInterface"]
-git-tree-sha1 = "0c39671e531549c2969bdf0c0513d03a07f9ffd8"
+git-tree-sha1 = "e923b82319aee3c7c5b64302b3a3aecc981382b9"
 uuid = "2e9cd046-0924-5485-92f1-d5272153d98b"
-version = "0.9.12"
+version = "0.9.13"
 
 [[HTTP]]
 deps = ["Base64", "Dates", "IniFile", "MbedTLS", "NetworkOptions", "Sockets", "URIs"]
@@ -157,6 +163,12 @@ deps = ["LinearAlgebra", "SparseArrays"]
 git-tree-sha1 = "371a7df7a6cce5909d6c576f234a2da2e3fa0c98"
 uuid = "e91730f6-4275-51fb-a7a0-7064cfbd3b39"
 version = "0.6.0"
+
+[[IOCapture]]
+deps = ["Logging"]
+git-tree-sha1 = "377252859f740c217b936cebcd918a44f9b53b59"
+uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
+version = "0.1.1"
 
 [[IniFile]]
 deps = ["Test"]
@@ -188,9 +200,9 @@ version = "0.3.3"
 
 [[JuMP]]
 deps = ["Calculus", "DataStructures", "ForwardDiff", "JSON", "LinearAlgebra", "MathOptInterface", "MutableArithmetics", "NaNMath", "Printf", "Random", "SparseArrays", "SpecialFunctions", "Statistics"]
-git-tree-sha1 = "e6eaa873100e72fbe185516a889ffeb8d0adeea3"
+git-tree-sha1 = "8dfc5df8aad9f2cfebc8371b69700efd02060827"
 uuid = "4076af6c-e467-56ae-b986-b466b2749572"
-version = "0.21.7"
+version = "0.21.8"
 
 [[LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
@@ -264,9 +276,9 @@ uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 
 [[MutableArithmetics]]
 deps = ["LinearAlgebra", "SparseArrays", "Test"]
-git-tree-sha1 = "3301e152b9a208745fad6cd4b068307a5d218a38"
+git-tree-sha1 = "ad9b2bce6021631e0e20706d361972343a03e642"
 uuid = "d8a4904e-b15c-11e9-3269-09a3773c0cb0"
-version = "0.2.18"
+version = "0.2.19"
 
 [[NaNMath]]
 git-tree-sha1 = "bfe47e760d60b82b66b61d2d44128b62e3a369fb"
@@ -283,9 +295,9 @@ uuid = "efe28fd5-8261-553b-a9e1-b2916fc3738e"
 version = "0.5.4+0"
 
 [[OrderedCollections]]
-git-tree-sha1 = "4fa2ba51070ec13fcc7517db714445b4ab986bdf"
+git-tree-sha1 = "85f8e6578bf1f9ee0d11e7bb1b1456435479d47c"
 uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
-version = "1.4.0"
+version = "1.4.1"
 
 [[PDMats]]
 deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
@@ -305,9 +317,9 @@ uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[Preferences]]
 deps = ["TOML"]
-git-tree-sha1 = "ea79e4c9077208cd3bc5d29631a26bc0cff78902"
+git-tree-sha1 = "00cfd92944ca9c760982747e9a1d0d5d86ab1e5a"
 uuid = "21216c6a-2e73-6563-6e65-726566657250"
-version = "1.2.1"
+version = "1.2.2"
 
 [[Printf]]
 deps = ["Unicode"]
@@ -370,9 +382,9 @@ version = "1.3.0"
 
 [[StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "2653e9c769343808781a8bd5010ee7a17c01152e"
+git-tree-sha1 = "fb46e45ef2cade8be20bb445b3ffeca3c6d6f7d3"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.1.2"
+version = "1.1.3"
 
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]

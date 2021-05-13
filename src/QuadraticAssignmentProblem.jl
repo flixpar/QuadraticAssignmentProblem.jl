@@ -24,6 +24,5 @@ export zeroone_matrix
 export generate_qap
 
 export qap_objective
-export gm_objective
 
 end
