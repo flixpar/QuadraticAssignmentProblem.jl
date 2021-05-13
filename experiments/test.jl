@@ -1,7 +1,10 @@
 using QuadraticAssignmentProblem
 
+using Gurobi
+qap_set_optimizer!(Gurobi.Optimizer)
+
 N = 8
-alg = qap_ns
+alg = qap_lprounding
 
 @show N
 @show alg

@@ -6,6 +6,9 @@ using CSV
 using Dates
 using Random
 
+using Gurobi
+qap_set_optimizer!(Gurobi.Optimizer)
+
 
 iterations = 10
 

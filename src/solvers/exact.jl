@@ -1,6 +1,5 @@
 using JuMP
 using Convex
-using Gurobi
 import MathOptInterface as MOI
 
 
@@ -16,7 +15,8 @@ function qap_exact(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, obj::
 		B = B[seeds+1:end, seeds+1:end]
 	end
 
-	model = Model(Gurobi.Optimizer)
+	optimizer = get_optimizer()
+	model = Model(optimizer)
 	set_silent(model)
 
 	@variable(model, P[1:n,1:n], Bin)
@@ -64,7 +64,8 @@ function qap_exact_alt(A::AbstractArray{<:Real,2}, B::AbstractArray{<:Real,2}, o
 	problem.constraints += P * o == o
 	problem.constraints += P' * o == o
 
-	solve!(problem, Gurobi.Optimizer(OutputFlag=0))
+	optimizer = get_optimizer()
+	solve!(problem, optimizer(OutputFlag=0))
 
 	P̂ = Int.(P.value)
 

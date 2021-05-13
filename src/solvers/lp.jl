@@ -1,5 +1,4 @@
 using JuMP
-using Gurobi
 using Hungarian
 using LinearAlgebra
 import MathOptInterface as MOI
@@ -39,7 +38,8 @@ lower bounds for the quadratic assignment problem" by Adams and Johnson.
 function adams_johnson_linearization(A, B, obj; integer::Bool=true)
 	N = size(A, 1)
 
-	model = Model(Gurobi.Optimizer)
+	optimizer = get_optimizer()
+	model = Model(optimizer)
 	set_silent(model)
 
 	@variable(model, x[1:N,1:N], binary=integer)

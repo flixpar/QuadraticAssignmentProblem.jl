@@ -10,6 +10,7 @@ include("solvers/random.jl")
 include("util/generators.jl")
 include("util/graphmatching.jl")
 include("util/metrics.jl")
+include("util/util.jl")
 
 export qap_exact
 export qap_linearization, qap_lprounding
@@ -24,5 +25,7 @@ export zeroone_matrix
 export generate_qap
 
 export qap_objective
+
+export qap_set_optimizer!
 
 end
